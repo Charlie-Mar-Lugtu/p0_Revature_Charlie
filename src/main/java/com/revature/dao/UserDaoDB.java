@@ -28,19 +28,22 @@ public class UserDaoDB implements UserDao {
 
 	public User addUser(User user) {
 		// TODO Auto-generated method stub
+//		connection = ConnectionU
 		String query = "insert into p0_user ( first_name, last_name, username, password, user_type) values (?,?,?,?,?)";
-		int status = 0;
+		int check = 0;
+		if (connection!=null) {
+			System.out.println("connection is not null..................................");
+		}
 		try {
-			statement = connection.prepareStatement(query);
+			preparedStatement = connection.prepareStatement(query);
 			
 			preparedStatement.setString(1, user.getFirstName());
 			preparedStatement.setString(2, user.getLastName());
 			preparedStatement.setString(3, user.getUsername());
 			preparedStatement.setString(4, user.getPassword());
-			//pstmt.setObject(5, UserType.CUSTOMER);
 			preparedStatement.setObject(5, user.getUserType().toString());
-			preparedStatement.executeUpdate();
-			if(status > 0) {
+			check = preparedStatement.executeUpdate();
+			if(check > 0) {
 				System.out.println("Registered Sucessfully!!!");
 			}
 		} catch (SQLException e) {
@@ -66,7 +69,7 @@ public class UserDaoDB implements UserDao {
 				user.setLastName(resultSet.getString("last_name"));
 				user.setUsername(resultSet.getString("username"));
 				user.setPassword(resultSet.getString("password"));
-				user.setUserType((UserType) resultSet.getObject("user_type"));
+				user.setUserType(resultSet.getString("user_type"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -76,22 +79,24 @@ public class UserDaoDB implements UserDao {
 	}
 
 	public User getUser(String username, String pass) {
-		// TODO Auto-generated method stub
-		String query = "select * from p0_user where username=? and password=?";
-		User user = new User();
+		
+		
+		String query = "select * from p0_user where username='" +username+"' and password='"+pass+"';";
+		User user = null;
 		try {
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, username);
-			preparedStatement.setString(2, pass);
-			resultSet = preparedStatement.executeQuery(query);
+
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
+			
 			if(resultSet.next()) 
 			{
+				user = new User();
 				user.setId(resultSet.getInt("id"));
 				user.setFirstName(resultSet.getString("first_name"));
 				user.setLastName(resultSet.getString("last_name"));
 				user.setUsername(resultSet.getString("username"));
 				user.setPassword(resultSet.getString("password"));
-				user.setUserType((UserType) resultSet.getObject("user_type"));
+				user.setUserType(resultSet.getString("user_type"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -114,7 +119,8 @@ public class UserDaoDB implements UserDao {
 				u.setFirstName(resultSet.getString("first_name"));
 				u.setLastName(resultSet.getString("last_name"));
 				u.setUsername(resultSet.getString("username"));
-				u.setUserType((UserType) resultSet.getObject("user_type"));
+				u.setPassword(resultSet.getString("password"));
+				u.setUserType((resultSet.getString("user_type")));
 				ListOfUsers.add(u);
 			}
 		}catch(Exception e) {

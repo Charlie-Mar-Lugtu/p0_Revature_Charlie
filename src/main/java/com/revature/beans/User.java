@@ -57,12 +57,12 @@ public class User implements Serializable {
 		return userType;
 	}
 	
-//	public void setUserType(String userType) {
-//		this.userType = UserType.valueOf(userType);
-//	}
-	public void setUserType(UserType userType) {
-		this.userType = userType;
+	public void setUserType(String userType) {
+		this.userType = UserType.valueOf(userType);
 	}
+//	public void setUserType(UserType userType) {
+//		this.userType = userType;
+//	}
 	public List<Account> getAccounts() {
 		return accounts;
 	}
@@ -131,6 +131,8 @@ public class User implements Serializable {
 	
 	@Override
 	public String toString() {
+//		return id  +" "+ username + " "+  password  +" "+ firstName
+//				+" "+  lastName +" "+  userType +" "+  accounts;
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", userType=" + userType + ", accounts=" + accounts + "]";
 		//return id +" "+ username +" "+ password +" "+ firstName +" "+ lastName +" "+ userType +" "+ accounts;
@@ -150,15 +152,16 @@ public class User implements Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public User(String username, String password, String firstName, String lastName, UserType userType) {//List<Account> accounts
+	public User(String username, String password, String firstName, String lastName, UserType userType) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.userType = userType;
-//		this.accounts = accounts;
+
 	}
+	
 	public User(Integer id, String username, String password, String firstName, String lastName, UserType userType) {
 		super();
 		this.id = id;
@@ -167,6 +170,14 @@ public class User implements Serializable {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.userType = userType;
+	}
+	//I made this
+	public User(Integer id, String password, String firstName, String lastName) {
+		super();
+		this.id = id;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
 	
 	

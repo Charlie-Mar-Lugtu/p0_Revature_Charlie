@@ -15,7 +15,8 @@ public class ConnectionUtil {
 	private static Properties properties;
 	//Modified
 	private static Connection connection;
-	private static String URL = "jdbc:mysql://localhost:3306/p0";//=null
+	//private static String URL = "jdbc:mysql://localhost:3306/p0";
+	private static String URL = "jdbc:mysql://localhost:3306/p0_1";
 	private static String CONNECTION_USERNAME = "root";
 	private static String CONNECTION_PASSWORD="Revature888:):(:)";
 	/**
@@ -24,18 +25,18 @@ public class ConnectionUtil {
 	 */
 	private ConnectionUtil() {
 //		FileInputStream fileStream = new FileInputStream("pathtopropertiesfile"); 
-		Properties properties = new Properties(); 
-		try {
-			FileInputStream fileStream = new FileInputStream("/src/main/resources/database.properties"); 
-			
-			properties.load(fileStream);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		URL = properties.getProperty("url");	
-		CONNECTION_PASSWORD = properties.getProperty("pswd"); 
-		CONNECTION_USERNAME = properties.getProperty("usr"); 
+//		Properties properties = new Properties(); 
+//		try {
+//			FileInputStream fileStream = new FileInputStream("src/main/resources/database.properties"); 
+//			
+//			properties.load(fileStream);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		URL = properties.getProperty("url");	
+//		CONNECTION_PASSWORD = properties.getProperty("pswd"); 
+//		CONNECTION_USERNAME = properties.getProperty("usr"); 
 	}
 	
 	public static synchronized ConnectionUtil getConnectionUtil() {
@@ -51,6 +52,21 @@ public class ConnectionUtil {
 	 */
 	public static Connection getConnection() {
 		// Hint: use the Properties variable to setup your Connection object
+		Properties properties = new Properties(); 
+		try {
+			FileInputStream fileStream = new FileInputStream("src/main/resources/database.properties"); 
+			
+			properties.load(fileStream);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		URL = properties.getProperty("url");	
+		CONNECTION_PASSWORD = properties.getProperty("pswd"); 
+		CONNECTION_USERNAME = properties.getProperty("usr"); 
+		
+		
+		
 		try {
 			
 			connection = DriverManager.getConnection(URL,CONNECTION_USERNAME,CONNECTION_PASSWORD);

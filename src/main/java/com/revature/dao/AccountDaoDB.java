@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.beans.Account;
+import com.revature.beans.Account.AccountType;
 import com.revature.beans.User;
 import com.revature.utils.ConnectionUtil;
 
@@ -25,14 +26,18 @@ public class AccountDaoDB implements AccountDao {
 	}
 	public Account addAccount(Account a) {
 		// TODO Auto-generated method stub
-		String query = "insert into account (owner_id, balance, account_type)";
+		String query = "insert into account (owner_id, balance, account_type) values (?,?,?)";
+		int check = 0;
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, a.getOwnerId());
 			preparedStatement.setDouble(2, a.getBalance());
 			preparedStatement.setObject(3, a.getType().toString());
-			int status = preparedStatement.executeUpdate();
-			if (status > 0) {
+//			preparedStatement.setBoolean(4, a.isApproved());
+//			preparedStatement.executeUpdate();
+			check = preparedStatement.executeUpdate();
+			
+			if (check > 0) {
 				System.out.println("Account is already created, please wait for approval...");
 			}
 		} catch (SQLException e) {
@@ -52,9 +57,10 @@ public class AccountDaoDB implements AccountDao {
 			resultSet = statement.executeQuery(query);
 			if (resultSet.next()) {
 				a.setId(resultSet.getInt("id"));
-				a.setOwnerId(resultSet.getInt("owner_id"));
+				a.setOwnerId
+				(resultSet.getInt("owner_id"));
 				a.setBalance(resultSet.getDouble("balance"));
-				//a.setType(resultSet.getString("account_type"));
+				a.setType(resultSet.getString("account_type"));
 				a.setApproved(resultSet.getBoolean("approved"));
 			}
 
@@ -78,7 +84,7 @@ public class AccountDaoDB implements AccountDao {
 				a.setId(resultSet.getInt("id"));
 				a.setOwnerId(resultSet.getInt("owner_id"));
 				a.setBalance(resultSet.getDouble("balance"));
-				//a.setType(resultSet.getString("account_type"));
+				a.setType(resultSet.getString("account_type"));
 				a.setApproved(resultSet.getBoolean("approved"));
 				ListOfAccounts.add(a);
 			}

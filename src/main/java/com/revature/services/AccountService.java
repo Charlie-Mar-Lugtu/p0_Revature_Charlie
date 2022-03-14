@@ -2,6 +2,7 @@ package com.revature.services;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import com.revature.beans.Account;
 import com.revature.beans.User;
 import com.revature.dao.AccountDao;
@@ -56,8 +57,9 @@ public class AccountService {
 	 * @return the Account object that was created
 	 */
 	public Account createNewAccount(User u) {
+		System.out.println(u.getAccounts().get(0));
 		return actDao.addAccount(u.getAccounts().get(0));
-		//return null;
+		
 	}
 	
 	/**

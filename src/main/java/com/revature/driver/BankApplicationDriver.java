@@ -1,5 +1,6 @@
 package com.revature.driver;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -38,7 +39,7 @@ public class BankApplicationDriver {
 		String un= null;
 		String pw = null;
 		System.out.println("Welcome to the Credit Union");
-		Collection<User> l = new ArrayList<User>();
+		//Collection<User> l = new ArrayList<User>();
 		Scanner userInput = new Scanner(System.in);
 		//Scanner userInput1 = new Scanner(System.in);
 		//Scanner userInput2 = new Scanner(System.in);
@@ -66,20 +67,23 @@ public class BankApplicationDriver {
 			case 1:
 				id = UserDaoFile.ListOfUsers.size();
 				System.out.println("Enter first name: ");
-				 fn = userInput.next();
+				fn = userInput.next();
 				System.out.println("Enter last name: ");
-				 ln = userInput.next();
+				ln = userInput.next();
 				System.out.println("Enter username: ");
-				 un = userInput.next();
+				un = userInput.next();
 				System.out.println("Enter password: ");
-				 pw = userInput.next();
+				pw = userInput.next();
 				
 				patron = new User(id++, un, pw, fn, ln, UserType.CUSTOMER); 
  
+//				ServiceForUsers.register(user);
 				
+				ServiceForUsers.register(patron);
 
 			
 				break;
+				/****************************Logging in*************************************/
 			case 2:
 				System.out.println("Enter Username : ");
 				un = userInput.next();
@@ -88,17 +92,17 @@ public class BankApplicationDriver {
 				User userLogin = ServiceForUsers.login(un, pw);
 				System.out.println("User Login : " + userLogin);
 				if (userLogin != null) {
-					System.out.println("Logged in Successfully!!!");
+					System.out.println("User Successfully Logged in!");
 					SessionCache.setCurrentUser(userLogin);
 
 					int option = 0;
-					int accountType = 0;
-					double startingBalance = 0;
-
-					do {
+					int TypeOfAccount = 0;
+					double initialBalance = 0;
+					while (option <= 6) {
+					//do {
 						System.out.println("1.Add New Account ");
-						System.out.println("2.Deposit");
-						System.out.println("3.Withdraw ");
+						System.out.println("2.Deposit money");
+						System.out.println("3.Withdraw money");
 						System.out.println("4.Wire Transfer ");
 						System.out.println("5.Approve/Reject Account ");
 						System.out.println("6.Logout ");
@@ -106,19 +110,20 @@ public class BankApplicationDriver {
 						option = userInput.nextInt();
 						switch (option) {
 						case 1:
-							System.out.print("select the Account Type [1.Checking/2.Saving]: ");
-							accountType = userInput.nextInt();
+							System.out.println("Choose the Account Type [1 or 2]: ");
+							System.out.println("1-Checking");
+							System.out.println("2-Saving");
+							TypeOfAccount = userInput.nextInt();
 							System.out.print("Enter Starting balance:");
-							startingBalance = userInput.nextDouble();
+							initialBalance = userInput.nextDouble();
 							Account account = new Account();
-							account.setBalance(startingBalance);
+							account.setBalance(initialBalance);
 							System.out.println("Logged user ID :" + SessionCache.getCurrentUser().get().getId());
 							account.setOwnerId(userLogin.getId());
-						//	account.setType(accountType == 1 ? AccountType.CHECKING.toString()
-						//			: AccountType.SAVINGS.toString());
-							List<Account> accountList = new ArrayList<Account>();
-							accountList.add(account);
-							userLogin.setAccounts(accountList);
+							account.setType(TypeOfAccount == 1 ? AccountType.CHECKING.toString() : AccountType.SAVINGS.toString());
+							List<Account> ListOfAccounts = new ArrayList<Account>();
+							ListOfAccounts.add(account);
+							userLogin.setAccounts(ListOfAccounts);
 							serviceAccounts.createNewAccount(userLogin);
 							break;
 						case 2:
@@ -142,27 +147,37 @@ public class BankApplicationDriver {
 						case 5:
 							break;
 						case 6:
-							System.out.print("Do you want to Logout? (1.Yes/2.No) :");
+							
+							
+							System.out.println("Do you want to Logout? [1 or 2]:");
+							System.out.println("1) Yes");
+							System.out.println("2) No");
 							int logout = 0;
 							logout = userInput.nextInt();
+					
 							if (logout == 1) {
 								SessionCache.setCurrentUser(null);
+								
 							}
+							
+							
 							break;
 						default:
 							System.out.println("Enter a number between 1 to 6");
 							break;
 						}
-
-					}while (option != 6);
+						
+					}//while (option <= 6);
 				}
 				
 
 				break;
 			case 3:
-				//System.out.println(userData.getAllUsers());
-				//userData.getAllUsers().forEach(System.out::println);
-				System.out.println(patron.toString());
+				System.out.println("********************Display Users******************************");
+			
+				userData.getAllUsers().forEach(System.out::println);
+				
+				System.out.println("***************************************************************");
 				break;
 			case 4:
 				System.out.println("Enter Id to remove customer:");
@@ -173,18 +188,18 @@ public class BankApplicationDriver {
 			case 5:
 				System.out.println("Enter Id of the customer");
 				id = userInput.nextInt();
-				System.out.println("Enter First Name:");
+				System.out.println("Update First Name:");
 				fn = userInput.next();
-				System.out.println("Enter Last Name:");
+				System.out.println("Update Last Name:");
 				ln = userInput.next();
-				System.out.print("Enter Password to Update:");
+				System.out.print("Update your password: ");
 				pw = userInput.next();
-				User updatedUser = new User();
-				updatedUser.setId(id);
-				updatedUser.setFirstName(fn);
-				updatedUser.setLastName(ln);
-				updatedUser.setPassword(pw);
-				userData.updateUser(updatedUser);
+				User patronUpdate = new User();
+				patronUpdate.setId(id);
+				patronUpdate.setFirstName(fn);
+				patronUpdate.setLastName(ln);
+				patronUpdate.setPassword(pw);
+				userData.updateUser(patronUpdate);
 				break;
 			case 6:
 				System.out.println("Thank you, come again. Bye.");
