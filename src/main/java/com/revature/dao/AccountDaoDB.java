@@ -51,6 +51,7 @@ public class AccountDaoDB implements AccountDao {
 	public Account getAccount(Integer actId) {
 		// TODO Auto-generated method stub
 		String query = "select * from account where id=" + actId.intValue();
+		//String query = "select * from account where account_id=" + actId.intValue();
 		Account a = new Account();
 		try {
 			statement = connection.createStatement();

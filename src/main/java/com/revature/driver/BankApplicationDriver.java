@@ -98,7 +98,7 @@ public class BankApplicationDriver {
 					int option = 0;
 					int TypeOfAccount = 0;
 					double initialBalance = 0;
-					while (option <= 6) {
+					while (option != 6) {
 					//do {
 						System.out.println("1.Add New Account ");
 						System.out.println("2.Deposit money");
@@ -129,10 +129,10 @@ public class BankApplicationDriver {
 						case 2:
 							System.out.println("Here are the available accounts");
 							serviceAccounts.getAccounts(userLogin).forEach(System.out::println);
-							System.out.print("Enter Account ID to Deposit :");
+							System.out.println("Enter Account ID to Deposit :");
 							int accountId = 0 ;
 							accountId = userInput.nextInt();
-							System.out.print("Enter the amount to deposit :");
+							System.out.println("Enter the amount to deposit :");
 							double amount = 0;
 							amount = userInput.nextDouble();
 							account = accountData.getAccount(accountId);
@@ -148,17 +148,17 @@ public class BankApplicationDriver {
 							break;
 						case 6:
 							
-							
-							System.out.println("Do you want to Logout? [1 or 2]:");
-							System.out.println("1) Yes");
-							System.out.println("2) No");
-							int logout = 0;
-							logout = userInput.nextInt();
-					
-							if (logout == 1) {
-								SessionCache.setCurrentUser(null);
-								
-							}
+							System.out.println("Okay, your account and money is automatically saved.");
+//							System.out.println("Do you want to Logout?");
+//							System.out.println("1) Yes");
+//							System.out.println("2) No");
+//							int logout = 0;
+//							logout = userInput.nextInt();
+//					
+//							if (logout == 1) {
+//								SessionCache.setCurrentUser(null);
+//								
+//							}
 							
 							
 							break;
